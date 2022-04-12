@@ -8,6 +8,8 @@ public class AddressBook implements AddressBookInterface{
 	public static final int ADDRESS_BOOK_EXIT = 5;
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 	public static String addressBookName;
+	boolean conditionForDuplicateCheck = false;
+
 
 	public static String getAddressBookName() {
 		return addressBookName;
@@ -64,36 +66,46 @@ public class AddressBook implements AddressBookInterface{
 
 	@Override
 	public void addContact() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-
 		ContactPerson contactPerson = new ContactPerson();
 		Address address = new Address();
-
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter First Name : ");
-		contactPerson.setFirstName(scanner.next());
+		String firstName = scanner.next();
+		contactPerson.setFirstName(firstName);
 
-		System.out.println("Enter Last Name : ");
-		contactPerson.setLastName(scanner.next());
+		contactList.entrySet().stream().forEach(p -> {
+			if(p.getKey().equals(firstName)) {
+				System.out.println("Contact Already Exists");
+				conditionForDuplicateCheck = true;
+				return;
+			}
+		});
+		contactPerson.setFirstName(firstName);
+		if(conditionForDuplicateCheck == false) {
 
-		System.out.println("Enter ph.no : ");
-		contactPerson.setPhoneNumber(scanner.nextLong());
+			System.out.println("Enter Last Name : ");
+			contactPerson.setLastName(scanner.next());
 
-		System.out.println("Enter City : ");
-		address.setCity(scanner.next());
+			System.out.println("Enter ph.no : ");
+			contactPerson.setPhoneNumber(scanner.nextLong());
 
-		System.out.println("Enter State : ");
-		address.setState(scanner.next());
+			System.out.println("Enter City : ");
+			address.setCity(scanner.next());
 
-		System.out.println("Enter Zipcode : ");
-		address.setZip(scanner.nextLong());
+			System.out.println("Enter State : ");
+			address.setState(scanner.next());
 
-		System.out.println("Enter EmailID : ");
-		contactPerson.setEmail(scanner.next());
+			System.out.println("Enter Zipcode : ");
+			address.setZip(scanner.nextLong());
 
-		contactPerson.setAddress(address);
+			System.out.println("Enter EmailID : ");
+			contactPerson.setEmail(scanner.next());
 
-		contactList.put(contactPerson.getFirstName(), contactPerson);
+			contactPerson.setAddress(address);
+
+			contactList.put(contactPerson.getFirstName(), contactPerson);
+		}
 	}
 
 	@Override
