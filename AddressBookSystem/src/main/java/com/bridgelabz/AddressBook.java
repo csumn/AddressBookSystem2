@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class AddressBook implements AddressBookInterface{
+	public static final int MAIN_EXIT = 5;
 	ArrayList <ContactPerson> contactList = new ArrayList<ContactPerson>();
 
 	@Override
@@ -22,7 +23,7 @@ public class AddressBook implements AddressBookInterface{
 		boolean condition = true;
 		do{
 			System.out.println("\nSelect any option from below\n");
-			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n4. Exit");
+			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"+"4. Delete Contact\n"  +MAIN_EXIT+". Exit");
 
 			switch (scanner.nextInt()) {
 			case 1:
@@ -35,6 +36,9 @@ public class AddressBook implements AddressBookInterface{
 				displayContents();
 				break;
 			case 4:
+				deletePerson();
+				break;
+			case MAIN_EXIT:
 				condition = false;
 				System.out.println("Terminated...");
 				break;
@@ -149,4 +153,21 @@ public class AddressBook implements AddressBookInterface{
 			}
 		}
 	}
+
+	@Override
+	public void deletePerson() {
+		System.out.println("Enter the first name of the person to be deleted");
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		Iterator<ContactPerson> iterator = contactList.listIterator();
+		while(iterator.hasNext()) {
+			ContactPerson person = iterator.next();
+			if(scanner.next().equals(person.getFirstName())) {
+				contactList.remove(person);
+				System.out.println("Done, contact removed!");
+				return;
+			}
+		}
+	}
 }
+
