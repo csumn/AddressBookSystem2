@@ -1,5 +1,6 @@
 package com.bridgelabz;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,7 +19,11 @@ public class AddressBook implements AddressBookInterface{
 	public void setAddressBookName(String addressBookName) {
 		AddressBook.addressBookName = addressBookName;
 	}
-
+	
+	public ArrayList<ContactPerson> getContact() {
+		return new ArrayList<ContactPerson>(contactList.values());
+	}
+	
 	@Override
 	public void displayContents() {
 		System.out.println("----- Contents of the Address Book "+AddressBook.getAddressBookName()+" -----");
