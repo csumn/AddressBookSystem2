@@ -6,7 +6,7 @@ public class ContactPerson {
 	private String email;
 	private long phoneNumber;
 	private Address address;
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -37,9 +37,11 @@ public class ContactPerson {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
 	@Override
 	public String toString() {
 		return "ContactPerson [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", address=" + address + "]";
+				+ ", phoneNumber=" + phoneNumber + "," + address.toString() + "]";
 	}
+
 }
