@@ -1,19 +1,30 @@
 package com.bridgelabz;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBook implements AddressBookInterface{
-	public static final int MAIN_EXIT = 5;
-	ArrayList <ContactPerson> contactList = new ArrayList<ContactPerson>();
+	public static final int ADDRESS_BOOK_EXIT = 5;
+	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+	public static String addressBookName;
+
+	public static String getAddressBookName() {
+		return addressBookName;
+	}
+
+	public void setAddressBookName(String addressBookName) {
+		AddressBook.addressBookName = addressBookName;
+	}
 
 	@Override
 	public void displayContents() {
-		Iterator<ContactPerson> iterator = contactList.iterator();
-		while(iterator.hasNext()) {
-			System.out.println(iterator.next());
-		}		
+		System.out.println("----- Contents of the Address Book "+AddressBook.getAddressBookName()+" -----");
+		for (String eachContact : contactList.keySet()) {
+			ContactPerson person = contactList.get(eachContact);
+			System.out.println(person);
+		}
+		System.out.println("-----------------------------------------");
 	}
 
 	@Override
@@ -22,8 +33,8 @@ public class AddressBook implements AddressBookInterface{
 		Scanner scanner = new Scanner(System.in);
 		boolean condition = true;
 		do{
-			System.out.println("\nSelect any option from below\n");
-			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"+"4. Delete Contact\n"  +MAIN_EXIT+". Exit");
+			System.out.println("\nSelect any option which you want to perform on selected AddressBook\n");
+			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"+"4. Delete Contact\n"  +ADDRESS_BOOK_EXIT+". Exit");
 
 			switch (scanner.nextInt()) {
 			case 1:
@@ -38,13 +49,14 @@ public class AddressBook implements AddressBookInterface{
 			case 4:
 				deletePerson();
 				break;
-			case MAIN_EXIT:
+			case ADDRESS_BOOK_EXIT:
 				condition = false;
-				System.out.println("Terminated...");
+				System.out.println("Terminated and redirected to main menu...");
 				break;
-			default: System.out.println("Kindly enter a valid inpu...");
-			operation();
-			break;
+			default: 
+				System.out.println("Kindly enter a valid input...");
+				operation();
+				break;
 			}
 
 		}while(condition);		
@@ -52,7 +64,6 @@ public class AddressBook implements AddressBookInterface{
 
 	@Override
 	public void addContact() {
-		System.out.println("\n***Welcome To Address Book Program***\n");
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 
@@ -82,75 +93,71 @@ public class AddressBook implements AddressBookInterface{
 
 		contactPerson.setAddress(address);
 
-		contactList.add(contactPerson);
+		contactList.put(contactPerson.getFirstName(), contactPerson);
 	}
 
 	@Override
 	public void editPerson() {
+		ContactPerson person = new ContactPerson();
+
 		System.out.println("Enter the first name on which you would like to make changes : ");
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		String fname = scanner.next();
-		Iterator<ContactPerson> iterator = contactList.listIterator();
+		if(contactList.containsKey(fname)) {
+			person = contactList.get(fname);
+			Address address = person.getAddress();
+			System.out.println("\nSelect which one you want to update : ");
+			System.out.println("1. Firstname\n2. Last Name\n3. Phone Number\n4. Email\n5. City\n6. State\n7. ZipCode\n8. Back");
+			int choice = scanner.nextInt();
 
-		while(iterator.hasNext()) {
-			ContactPerson person = iterator.next();
+			switch(choice) {
+			case 1: 
+				System.out.println("Enter the correct First Name :");
+				person.setFirstName(scanner.next());
+				System.out.println("Updated!");
+				break;
+			case 2: 
+				System.out.println("Enter the correct Last Name :");
+				person.setLastName(scanner.next());
+				System.out.println("Updated!");
 
-			if(fname.equals(person.getFirstName()) ) {
-
-				Address address = person.getAddress();
-				System.out.println("\nSelect which one you want to update : ");
-				System.out.println("1. Firstname\n2. Last Name\n3. Phone Number\n4. Email\n5. City\n6. State\n7. ZipCode\n8. Back");
-				int choice = scanner.nextInt();
-
-				switch(choice) {
-				case 1: 
-					System.out.println("Enter the correct First Name :");
-					person.setFirstName(scanner.next());
-					System.out.println("Updated!");
-					break;
-				case 2: 
-					System.out.println("Enter the correct Last Name :");
-					person.setLastName(scanner.next());
-					System.out.println("Updated!");
-
-					break;
-				case 3: 
-					System.out.println("Enter the correct Phone Number :");
-					person.setPhoneNumber(scanner.nextLong());		
-					System.out.println("Updated!");
-					break;
-				case 4: 
-					System.out.println("Enter the correct Email Address :");
-					person.setEmail(scanner.next());
-					System.out.println("Updated!");
-					break;
-				case 5:
-					System.out.println("Enter the correct City :");
-					address.setCity(scanner.next());	
-					System.out.println("Updated!");
-					break;
-				case 6:
-					System.out.println("Enter the correct State :");
-					address.setState(scanner.next());	
-					System.out.println("Updated!");
-					break;
-				case 7:
-					System.out.println("Enter the correct ZipCode :");
-					address.setZip(scanner.nextLong());	
-					System.out.println("Updated!");
-					break;
-				case 8:
-					System.out.println("Edit Section got terminated");
-					operation();
-				default: 
-					System.out.println("Kindly enter a valid input");
-					break;
-				}
-
-			}else {
-				System.out.println("Contact not found...");
+				break;
+			case 3: 
+				System.out.println("Enter the correct Phone Number :");
+				person.setPhoneNumber(scanner.nextLong());		
+				System.out.println("Updated!");
+				break;
+			case 4: 
+				System.out.println("Enter the correct Email Address :");
+				person.setEmail(scanner.next());
+				System.out.println("Updated!");
+				break;
+			case 5:
+				System.out.println("Enter the correct City :");
+				address.setCity(scanner.next());	
+				System.out.println("Updated!");
+				break;
+			case 6:
+				System.out.println("Enter the correct State :");
+				address.setState(scanner.next());	
+				System.out.println("Updated!");
+				break;
+			case 7:
+				System.out.println("Enter the correct ZipCode :");
+				address.setZip(scanner.nextLong());	
+				System.out.println("Updated!");
+				break;
+			case 8:
+				System.out.println("Edit Section got terminated");
+				operation();
+			default: 
+				System.out.println("Kindly enter a valid input");
+				break;
 			}
+
+		}else {
+			System.out.println("Contact not found...");
 		}
 	}
 
@@ -159,15 +166,16 @@ public class AddressBook implements AddressBookInterface{
 		System.out.println("Enter the first name of the person to be deleted");
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		Iterator<ContactPerson> iterator = contactList.listIterator();
-		while(iterator.hasNext()) {
-			ContactPerson person = iterator.next();
-			if(scanner.next().equals(person.getFirstName())) {
-				contactList.remove(person);
-				System.out.println("Done, contact removed!");
-				return;
-			}
+		String firstName = scanner.next();
+
+		if (contactList.containsKey(firstName)){
+			contactList.remove(firstName);
+			System.out.println("Done, contact removed!");
+		}else
+		{
+			System.out.println("Contact not found...");
 		}
 	}
 }
+
 
