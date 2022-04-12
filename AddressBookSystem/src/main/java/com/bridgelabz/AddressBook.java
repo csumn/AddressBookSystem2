@@ -52,7 +52,6 @@ public class AddressBook implements AddressBookInterface{
 
 	@Override
 	public void addContact() {
-		System.out.println("\n***Welcome To Address Book Program***\n");
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 
