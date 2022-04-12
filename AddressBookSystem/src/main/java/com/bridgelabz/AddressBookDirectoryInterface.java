@@ -6,5 +6,7 @@ public interface AddressBookDirectoryInterface {
 	public void addAddressBook();
 	public void editAddressBook();
 	public void displayDirectoryDetails();
+	public void	searchPersonByCity();
+	public void searchPersonByState();
 
 }
