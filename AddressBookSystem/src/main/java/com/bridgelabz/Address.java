@@ -1,6 +1,7 @@
 package com.bridgelabz;
 
 public class Address {
+	
 	private String city; 
 	private String state; 
 	private long zip;
@@ -28,10 +29,10 @@ public class Address {
 	public void setZip(long zip) {
 		this.zip = zip;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Address [city=" + city + ", state=" + state + ", zip=" + zip + "]";
+		return " city=" + city + ", state=" + state + ", zip=" + zip + "]";
 	}
 
 }
