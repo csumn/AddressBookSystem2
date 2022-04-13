@@ -8,9 +8,33 @@ import java.util.Scanner;
 public class AddressBook implements AddressBookInterface{
 	public static final int ADDRESS_BOOK_EXIT = 5;
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+
+	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
+	public static HashMap<String, ArrayList<ContactPerson>> personByState = new HashMap<String, ArrayList<ContactPerson>>();
 	public static String addressBookName;
 	boolean conditionForDuplicateCheck = false;
 
+	public void addPersonToCity(ContactPerson contact) {
+		if (personByCity.containsKey(contact.getAddress().getCity())) {
+			personByCity.get(contact.getAddress().getCity()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> cityList = new ArrayList<ContactPerson>();
+			cityList.add(contact);
+			personByCity.put(contact.getAddress().getCity(), cityList);
+		}
+	}
+
+	public void addPersonToState(ContactPerson contact) {
+		if (personByState.containsKey(contact.getAddress().getState())) {			
+			personByState.get(contact.getAddress().getState()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> stateList = new ArrayList<ContactPerson>();
+			stateList.add(contact);
+			personByState.put(contact.getAddress().getState(), stateList);
+		}
+	}
 
 	public static String getAddressBookName() {
 		return addressBookName;
@@ -19,11 +43,11 @@ public class AddressBook implements AddressBookInterface{
 	public void setAddressBookName(String addressBookName) {
 		AddressBook.addressBookName = addressBookName;
 	}
-	
+
 	public ArrayList<ContactPerson> getContact() {
 		return new ArrayList<ContactPerson>(contactList.values());
 	}
-	
+
 	@Override
 	public void displayContents() {
 		System.out.println("----- Contents of the Address Book "+AddressBook.getAddressBookName()+" -----");
@@ -110,6 +134,8 @@ public class AddressBook implements AddressBookInterface{
 			contactPerson.setAddress(address);
 
 			contactList.put(contactPerson.getFirstName(), contactPerson);
+			addPersonToCity(contactPerson);
+			addPersonToState(contactPerson);
 		}
 	}
 

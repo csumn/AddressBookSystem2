@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookDirectory implements AddressBookDirectoryInterface{
-	private static final int MAIN_EXIT = 6;
+	private static final int MAIN_EXIT = 8;
 	public AddressBook addressBook;
 	Map<String,AddressBook> addressBookDirectory = new HashMap<String,AddressBook>();
 
@@ -18,7 +18,8 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 		do {
 			System.out.println("\nSelect any option : \n\n1. Add AddressBook"
 					+ "\n2. Edit Existing Addressbook"
-					+"\n3. Search Person by City\n4. Search Person by State\n5. Display Addressbook" 
+					+"\n3. Search Person by City\n4. Search Person by State\n5. Display Addressbook"
+					+"\n6. View by City\n7. View by State"
 					+ "\n"+MAIN_EXIT+". Exit");
 			switch(scanner.nextInt()) {
 			case 1:
@@ -35,13 +36,18 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 				break;
 			case 5:
 				displayDirectoryDetails();
-				break;
 			case 6:
+				displayPeopleByRegion(AddressBook.personByCity);
+				break;
+			case 7:
+				displayPeopleByRegion(AddressBook.personByState);
+				break;
+			case 8:
 				condition = false;
 				System.out.println("Terminated....");
 				break;
 			default:
-				System.out.println("Kindly Enter a valid input!");
+				break;
 			}
 		}while(condition);
 	}
@@ -126,5 +132,17 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 		}else {
 			System.out.println("No contacts as of now");
 		}
+	}
+
+	@Override
+	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
+		ArrayList<ContactPerson> list;
+		for (String name : listToDisplay.keySet()) {
+			System.out.println("Contacts in : " + name);
+			list = listToDisplay.get(name);
+			for (ContactPerson contact : list) {
+				System.out.println(contact);
+			}
+		}		
 	}
 }
