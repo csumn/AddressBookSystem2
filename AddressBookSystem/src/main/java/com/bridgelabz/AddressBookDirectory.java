@@ -53,6 +53,7 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 				System.out.println("Terminated....");
 				break;
 			default:
+				System.out.println("Kindly enter a valid input");
 				break;
 			}
 		}while(condition);

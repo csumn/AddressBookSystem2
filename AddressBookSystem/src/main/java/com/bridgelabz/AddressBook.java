@@ -2,11 +2,14 @@ package com.bridgelabz;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBook implements AddressBookInterface{
-	public static final int ADDRESS_BOOK_EXIT = 5;
+	public static final int ADDRESS_BOOK_EXIT = 6;
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 
 	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
@@ -65,8 +68,8 @@ public class AddressBook implements AddressBookInterface{
 		boolean condition = true;
 		do{
 			System.out.println("\nSelect any option which you want to perform on selected AddressBook\n");
-			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"+"4. Delete Contact\n"  +ADDRESS_BOOK_EXIT+". Exit");
-
+			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"
+					+ "4. Delete Contact\n5. Sort the Address Book\n"+ADDRESS_BOOK_EXIT+". Exit");
 			switch (scanner.nextInt()) {
 			case 1:
 				addContact();
@@ -79,6 +82,9 @@ public class AddressBook implements AddressBookInterface{
 				break;
 			case 4:
 				deletePerson();
+				break;
+			case 5:
+				sortAddressBook();
 				break;
 			case ADDRESS_BOOK_EXIT:
 				condition = false;
@@ -219,6 +225,22 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("Contact not found...");
 		}
 	}
+
+	@Override
+	public void sortAddressBook() {
+		List<ContactPerson> sortedContactList = contactList.values().stream()
+				.sorted((firstperson, secondperson) -> firstperson.getFirstName().compareTo(secondperson.getFirstName()))
+				.collect(Collectors.toList());
+
+		System.out.println("***Sorted Address Book "+AddressBook.getAddressBookName()+"***");
+		Iterator<ContactPerson> iterator = sortedContactList.iterator();
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
+			System.out.println();
+		}
+		System.out.println("-----------------------------------------");
+	}		
 }
+
 
 
