@@ -7,5 +7,5 @@ public interface AddressBookInterface {
 	public void displayContents();
 	public void editPerson();
 	public void deletePerson();
-
+	public void sortAddressBook();
 }
