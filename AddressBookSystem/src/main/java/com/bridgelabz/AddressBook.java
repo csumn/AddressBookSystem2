@@ -1,5 +1,9 @@
 package com.bridgelabz;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +13,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class AddressBook implements AddressBookInterface{
-	public static final int ADDRESS_BOOK_EXIT = 6;
+	public static final int ADDRESS_BOOK_EXIT = 8;
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 
 	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
@@ -69,7 +73,7 @@ public class AddressBook implements AddressBookInterface{
 		do{
 			System.out.println("\nSelect any option which you want to perform on selected AddressBook\n");
 			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"
-					+ "4. Delete Contact\n5. Sort the Address Book\n"+ADDRESS_BOOK_EXIT+". Exit");
+					+ "4. Delete Contact\n5. Sort the Address Book\n6. Write To File\n7. Read From File\n"+ADDRESS_BOOK_EXIT+". Exit");
 			switch (scanner.nextInt()) {
 			case 1:
 				addContact();
@@ -85,6 +89,13 @@ public class AddressBook implements AddressBookInterface{
 				break;
 			case 5:
 				sortAddressBook();
+				break;
+			case 6:
+				writeToAddressBookFile();
+				System.out.println("Written To file");
+				break;
+			case 7:
+				readDataFromFile();
 				break;
 			case ADDRESS_BOOK_EXIT:
 				condition = false;
@@ -269,5 +280,43 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("Kindly enter a valid input...");
 			break;
 		}
+	}
+
+	public void writeToAddressBookFile() {
+		String bookName = AddressBook.getAddressBookName();
+		String fileName = bookName+".txt";
+
+		StringBuffer addressBookBuffer = new StringBuffer();
+		contactList.values().stream().forEach(contact -> {
+			String person = contact.toString().concat("\n");
+			addressBookBuffer.append(person);
+		});
+
+		try {
+			Files.write(Paths.get(fileName), addressBookBuffer.toString().getBytes());
+		} 
+		catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+
+	public List<String> readDataFromFile() {
+		List<String> addressBookList = new ArrayList<String>();
+		String bookName = AddressBook.getAddressBookName();
+		String fileName = bookName+".txt";
+		System.out.println("Reading from : "+fileName+"\n");
+		try {
+			Files.lines(new File(fileName).toPath())
+			.map(line -> line.trim())
+			.forEach(p -> {
+				System.out.println(p);
+				addressBookList.add(p);
+			});
+
+		}
+		catch(IOException e){
+			System.out.println(e);
+		}
+		return addressBookList;
 	}
 }
