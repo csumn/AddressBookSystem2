@@ -17,7 +17,7 @@ public class ContactPerson {
 	private String state; 
 	@CsvBindByName(column = "zip")
 	private long zip;
-	
+
 	public String getFirstName() {
 		return firstName;
 	}

@@ -22,4 +22,6 @@ public interface AddressBookInterface {
 	public List<String> readDataFromFile(IOService fileIo); 
 	public void writeDataToCSV() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
 	public <CsvValidationException extends Throwable> void readDataFromCSV() throws IOException, CsvValidationException;
+	public void writeDataToJson() throws IOException;
+	public void readDataFromJson() throws IOException;
 }
