@@ -1,1 +1,6 @@
+<<<<<<< HEAD
+ContactPerson [firstName=Jeff, lastName=Bezos, email=Jeff13@gmail.com, phoneNumber=929292, city=Mumbai, state=Maharastra, zip=929292]
+ContactPerson [firstName=Virat, lastName=Kohli, email=Vk13@gmail.com, phoneNumber=929292, city=Bangalore, state=Karnataka, zip=9283]
+=======
 ContactPerson [firstName=Virat, lastName=Kohli, email=Vk123@gmail.com, phoneNumber=9289889898, city=Bangalore, state=Karnataka, zip=9292]]
+>>>>>>> main
