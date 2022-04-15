@@ -1,9 +1,5 @@
 package com.bridgelabz;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +16,10 @@ public class AddressBook implements AddressBookInterface{
 	public static HashMap<String, ArrayList<ContactPerson>> personByState = new HashMap<String, ArrayList<ContactPerson>>();
 	public static String addressBookName;
 	boolean conditionForDuplicateCheck = false;
+
+	public enum IOService {
+		CONSOLE_IO, FILE_IO
+	}
 
 	public void addPersonToCity(ContactPerson contact) {
 		if (personByCity.containsKey(contact.getAddress().getCity())) {
@@ -91,11 +91,11 @@ public class AddressBook implements AddressBookInterface{
 				sortAddressBook();
 				break;
 			case 6:
-				writeToAddressBookFile();
+				writeToAddressBookFile(IOService.FILE_IO);
 				System.out.println("Written To file");
 				break;
 			case 7:
-				readDataFromFile();
+				readDataFromFile(IOService.FILE_IO);
 				break;
 			case ADDRESS_BOOK_EXIT:
 				condition = false;
@@ -236,7 +236,8 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("Contact not found...");
 		}
 	}
-
+	
+	@Override
 	public void printSortedList(List<ContactPerson> sortedContactList) {
 		System.out.println("*** Sorted Address Book "+AddressBook.getAddressBookName()+"***");
 		Iterator<ContactPerson> iterator = sortedContactList.iterator();
@@ -282,41 +283,47 @@ public class AddressBook implements AddressBookInterface{
 		}
 	}
 
-	public void writeToAddressBookFile() {
-		String bookName = AddressBook.getAddressBookName();
-		String fileName = bookName+".txt";
+	@Override
+	public void writeToAddressBookFile(IOService ioService) {
+		if(ioService.equals(IOService.CONSOLE_IO))
+			displayContents();
 
-		StringBuffer addressBookBuffer = new StringBuffer();
-		contactList.values().stream().forEach(contact -> {
-			String person = contact.toString().concat("\n");
-			addressBookBuffer.append(person);
-		});
-
-		try {
-			Files.write(Paths.get(fileName), addressBookBuffer.toString().getBytes());
-		} 
-		catch (IOException e) {
-			System.out.println(e);
+		else if(ioService.equals(IOService.FILE_IO)) {
+			String bookName = AddressBook.getAddressBookName();
+			String fileName = bookName+".txt";
+			new AddressBookFileIO().writeToAddressBookFile(fileName, contactList);
 		}
 	}
 
-	public List<String> readDataFromFile() {
-		List<String> addressBookList = new ArrayList<String>();
+	@Override
+	public void printData(IOService fileIo) {
 		String bookName = AddressBook.getAddressBookName();
 		String fileName = bookName+".txt";
-		System.out.println("Reading from : "+fileName+"\n");
-		try {
-			Files.lines(new File(fileName).toPath())
-			.map(line -> line.trim())
-			.forEach(p -> {
-				System.out.println(p);
-				addressBookList.add(p);
-			});
+		if(fileIo.equals(IOService.FILE_IO)) new AddressBookFileIO().printData(fileName);
+	}
+
+	@Override
+	public long countEntries(IOService fileIo) {
+
+		String bookName = AddressBook.getAddressBookName();
+		String fileName = bookName+".txt";
+		if(fileIo.equals(IOService.FILE_IO)) 
+			return new AddressBookFileIO().countEntries(fileName);
+
+		return 0;
+	}
+
+	@Override
+	public List<String> readDataFromFile(IOService fileIo) {
+
+		List<String> detailsFile = new ArrayList<String>();
+		if(fileIo.equals(IOService.FILE_IO)) {
+			System.out.println("Contacts from file are : ");
+			String bookName = AddressBook.getAddressBookName();
+			String fileName = bookName+".txt";
+			detailsFile = new AddressBookFileIO().readDataFromFile(fileName);
 
 		}
-		catch(IOException e){
-			System.out.println(e);
-		}
-		return addressBookList;
+		return detailsFile;
 	}
 }
