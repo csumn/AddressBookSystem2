@@ -1,1 +1,1 @@
-ContactPerson [firstName=Virat, lastName=Kohli, email=Vk@123, phoneNumber=9898989898, city=Bangalore, state=Karnataka, zip=929292]]
+ContactPerson [firstName=Virat, lastName=Kohli, email=Vk123@gmail.com, phoneNumber=9289889898, city=Bangalore, state=Karnataka, zip=9292]]
