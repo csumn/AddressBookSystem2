@@ -14,4 +14,5 @@ public interface AddressBookDirectoryInterface {
 	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay);
 	public void countPeopleByCity();
 	public void countPeopleByState();
+	public void readDataFromJson();
 }

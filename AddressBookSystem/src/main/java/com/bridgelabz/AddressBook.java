@@ -1,14 +1,14 @@
 package com.bridgelabz;
 
-<<<<<<< HEAD
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-=======
->>>>>>> main
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -24,7 +25,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBook implements AddressBookInterface{
-	public static final int ADDRESS_BOOK_EXIT = 10;
+	public static final int ADDRESS_BOOK_EXIT = 12;
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 
 	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
@@ -89,7 +90,7 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("\nSelect any option which you want to perform on selected AddressBook\n");
 			System.out.println("1. Add To Address Book\n2. Edit Existing Entry\n3. Display Address book\n"
 					+ "4. Delete Contact\n5. Sort the Address Book\n6. Write To File\n7. Read From File\n"
-					+ "8. Write To CSV File\n9. Read From CSV File\n"+ADDRESS_BOOK_EXIT+". Exit");
+					+ "8. Write To CSV File\n9. Read From CSV File\n10. Write to JSON\n11. Read data from JSON\n"+ADDRESS_BOOK_EXIT+". Exit");
 			switch (scanner.nextInt()) {
 			case 1:
 				addContact();
@@ -112,7 +113,6 @@ public class AddressBook implements AddressBookInterface{
 				break;
 			case 7:
 				readDataFromFile(IOService.FILE_IO);
-<<<<<<< HEAD
 				break;
 			case 8:
 				try {
@@ -127,8 +127,22 @@ public class AddressBook implements AddressBookInterface{
 				}catch (IOException e) {
 					System.out.println(e);
 				}
-=======
->>>>>>> main
+				break;
+			case 10:
+				try {
+					writeDataToJson();
+				}
+				catch(IOException e) {
+					System.out.println(e);
+				}
+				break;
+			case 11:
+				try {
+					readDataFromJson();
+				}
+				catch(IOException e) {
+					System.out.println(e);
+				}
 				break;
 			case ADDRESS_BOOK_EXIT:
 				condition = false;
@@ -265,11 +279,7 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("Contact not found...");
 		}
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> main
 	@Override
 	public void printSortedList(List<ContactPerson> sortedContactList) {
 		System.out.println("*** Sorted Address Book "+AddressBook.getAddressBookName()+"***");
@@ -320,7 +330,6 @@ public class AddressBook implements AddressBookInterface{
 	public void writeToAddressBookFile(IOService ioService) {
 		if(ioService.equals(IOService.CONSOLE_IO))
 			displayContents();
-<<<<<<< HEAD
 
 		else if(ioService.equals(IOService.FILE_IO)) {
 			String bookName = AddressBook.getAddressBookName();
@@ -378,43 +387,6 @@ public class AddressBook implements AddressBookInterface{
 		}
 	}
 
-=======
-
-		else if(ioService.equals(IOService.FILE_IO)) {
-			String bookName = AddressBook.getAddressBookName();
-			String fileName = bookName+".txt";
-			new AddressBookFileIO().writeToAddressBookFile(fileName, contactList);
-		}
-	}
-
-	@Override
-	public void printData(IOService fileIo) {
-		String bookName = AddressBook.getAddressBookName();
-		String fileName = bookName+".txt";
-		if(fileIo.equals(IOService.FILE_IO)) new AddressBookFileIO().printData(fileName);
-	}
-
-	@Override
-	public long countEntries(IOService fileIo) {
-
-		String bookName = AddressBook.getAddressBookName();
-		String fileName = bookName+".txt";
-		if(fileIo.equals(IOService.FILE_IO)) 
-			return new AddressBookFileIO().countEntries(fileName);
-
-		return 0;
-	}
-
-	@Override
-	public List<String> readDataFromFile(IOService fileIo) {
-
-		List<String> detailsFile = new ArrayList<String>();
-		if(fileIo.equals(IOService.FILE_IO)) {
-			System.out.println("Contacts from file are : ");
-			String bookName = AddressBook.getAddressBookName();
-			String fileName = bookName+".txt";
-			detailsFile = new AddressBookFileIO().readDataFromFile(fileName);
->>>>>>> main
 
 	@Override
 	public <CsvValidationException extends Throwable> void readDataFromCSV()
@@ -435,9 +407,40 @@ public class AddressBook implements AddressBookInterface{
 				System.out.println("\n");
 			}
 		}
-<<<<<<< HEAD
-=======
-		return detailsFile;
->>>>>>> main
+	}
+
+	@Override
+	public void writeDataToJson() throws IOException {
+		String fileName = "./" + AddressBook.getAddressBookName() + "Contacts.json";
+		Path filePath = Paths.get(fileName);
+		Gson gson = new Gson();
+		String json = gson.toJson(contactList.values());
+		FileWriter writer = new FileWriter(String.valueOf(filePath));
+		writer.write(json);
+		System.out.println("Written..");
+		writer.close();		
+	}
+
+	@Override
+	public void readDataFromJson() throws IOException {
+		ArrayList<ContactPerson> contactList;
+		String fileName = "./"+AddressBook.getAddressBookName()+"Contacts.json";
+		Path filePath = Paths.get(fileName);
+
+		try (Reader reader = Files.newBufferedReader(filePath)) {
+			Gson gson = new Gson();
+			contactList = new ArrayList<>(Arrays.asList(gson.fromJson(reader, ContactPerson[].class)));
+			for (ContactPerson contact : contactList) {
+				System.out.println("{");
+				System.out.println("Firstname : " + contact.getFirstName());
+				System.out.println("Lastname : " + contact.getLastName());
+				System.out.println("City : " + contact.getCity());
+				System.out.println("State : " + contact.getState());
+				System.out.println("Zip Code : " + contact.getZip());
+				System.out.println("Phone number : " + contact.getPhoneNumber());
+				System.out.println("Email : " + contact.getEmail());
+				System.out.println("}\n");
+			}
+		}	
 	}
 }
