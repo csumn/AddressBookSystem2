@@ -1,12 +1,23 @@
 package com.bridgelabz;
 
-public class ContactPerson {
-	private String firstName;
-	private String lastName;
-	private String email;
-	private long phoneNumber;
-	private Address address;
+import com.opencsv.bean.CsvBindByName;
 
+public class ContactPerson {
+	@CsvBindByName(column = "First Name")
+	private String firstName;
+	@CsvBindByName(column = "Last Name")
+	private String lastName;
+	@CsvBindByName(column = "email")
+	private String email;
+	@CsvBindByName(column = "phoneNumber")
+	private long phoneNumber;
+	@CsvBindByName(column = "city")
+	private String city; 
+	@CsvBindByName(column = "state")
+	private String state; 
+	@CsvBindByName(column = "zip")
+	private long zip;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -31,17 +42,27 @@ public class ContactPerson {
 	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public Address getAddress() {
-		return address;
+	public String getCity() {
+		return city;
 	}
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setCity(String city) {
+		this.city = city;
 	}
-
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public long getZip() {
+		return zip;
+	}
+	public void setZip(long zip) {
+		this.zip = zip;
+	}
 	@Override
 	public String toString() {
 		return "ContactPerson [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + "," + address.toString() + "]";
+				+ ", phoneNumber=" + phoneNumber + ", city=" + city + ", state=" + state + ", zip=" + zip + "]";
 	}
-
 }

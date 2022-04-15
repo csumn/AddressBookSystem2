@@ -111,7 +111,7 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 			for(AddressBook addressBook : addressBookDirectory.values()) {
 				ArrayList<ContactPerson> contactList = addressBook.getContact();
 				contactList.stream()
-				.filter(p -> p.getFirstName().equals(personName) && p.getAddress().getCity().equals(cityName))
+				.filter(p -> p.getFirstName().equals(personName) && p.getCity().equals(cityName))
 				.forEach(contact -> System.out.println(contact));
 			}
 			System.out.println("end of list...");
@@ -131,7 +131,7 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 			String personName = scanner.next();
 			for(AddressBook addressBook : addressBookDirectory.values()) {
 				ArrayList<ContactPerson> contactList = ((AddressBook) addressBook).getContact();
-				contactList.stream().filter(p -> p.getFirstName().equals(personName) && p.getAddress()
+				contactList.stream().filter(p -> p.getFirstName().equals(personName) && p
 						.getState().equals(stateName))
 				.forEach(contact -> System.out.println(contact));		
 			}
@@ -165,7 +165,7 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 			for(AddressBook addressBook : addressBookDirectory.values()) {
 				contactList = addressBook.getContact();
 				System.out.println(contactList.stream()
-						.filter(p -> p.getAddress().getCity().equals(city)).count());
+						.filter(p -> p.getCity().equals(city)).count());
 
 			}
 		}else
@@ -184,7 +184,7 @@ public class AddressBookDirectory implements AddressBookDirectoryInterface{
 			for(AddressBook addressBook : addressBookDirectory.values()) {
 				contactList = addressBook.getContact();
 				System.out.println(contactList.stream()
-						.filter(p -> p.getAddress().getState().equals(state)).count()); 
+						.filter(p -> p.getState().equals(state)).count()); 
 
 			}
 		}else
