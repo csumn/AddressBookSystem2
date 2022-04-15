@@ -1,10 +1,13 @@
 package com.bridgelabz;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+=======
+>>>>>>> main
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -109,6 +112,7 @@ public class AddressBook implements AddressBookInterface{
 				break;
 			case 7:
 				readDataFromFile(IOService.FILE_IO);
+<<<<<<< HEAD
 				break;
 			case 8:
 				try {
@@ -123,6 +127,8 @@ public class AddressBook implements AddressBookInterface{
 				}catch (IOException e) {
 					System.out.println(e);
 				}
+=======
+>>>>>>> main
 				break;
 			case ADDRESS_BOOK_EXIT:
 				condition = false;
@@ -259,7 +265,11 @@ public class AddressBook implements AddressBookInterface{
 			System.out.println("Contact not found...");
 		}
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> main
 	@Override
 	public void printSortedList(List<ContactPerson> sortedContactList) {
 		System.out.println("*** Sorted Address Book "+AddressBook.getAddressBookName()+"***");
@@ -310,6 +320,7 @@ public class AddressBook implements AddressBookInterface{
 	public void writeToAddressBookFile(IOService ioService) {
 		if(ioService.equals(IOService.CONSOLE_IO))
 			displayContents();
+<<<<<<< HEAD
 
 		else if(ioService.equals(IOService.FILE_IO)) {
 			String bookName = AddressBook.getAddressBookName();
@@ -367,6 +378,43 @@ public class AddressBook implements AddressBookInterface{
 		}
 	}
 
+=======
+
+		else if(ioService.equals(IOService.FILE_IO)) {
+			String bookName = AddressBook.getAddressBookName();
+			String fileName = bookName+".txt";
+			new AddressBookFileIO().writeToAddressBookFile(fileName, contactList);
+		}
+	}
+
+	@Override
+	public void printData(IOService fileIo) {
+		String bookName = AddressBook.getAddressBookName();
+		String fileName = bookName+".txt";
+		if(fileIo.equals(IOService.FILE_IO)) new AddressBookFileIO().printData(fileName);
+	}
+
+	@Override
+	public long countEntries(IOService fileIo) {
+
+		String bookName = AddressBook.getAddressBookName();
+		String fileName = bookName+".txt";
+		if(fileIo.equals(IOService.FILE_IO)) 
+			return new AddressBookFileIO().countEntries(fileName);
+
+		return 0;
+	}
+
+	@Override
+	public List<String> readDataFromFile(IOService fileIo) {
+
+		List<String> detailsFile = new ArrayList<String>();
+		if(fileIo.equals(IOService.FILE_IO)) {
+			System.out.println("Contacts from file are : ");
+			String bookName = AddressBook.getAddressBookName();
+			String fileName = bookName+".txt";
+			detailsFile = new AddressBookFileIO().readDataFromFile(fileName);
+>>>>>>> main
 
 	@Override
 	public <CsvValidationException extends Throwable> void readDataFromCSV()
@@ -387,5 +435,9 @@ public class AddressBook implements AddressBookInterface{
 				System.out.println("\n");
 			}
 		}
+<<<<<<< HEAD
+=======
+		return detailsFile;
+>>>>>>> main
 	}
 }
